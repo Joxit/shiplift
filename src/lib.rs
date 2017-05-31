@@ -614,6 +614,7 @@ impl Docker {
                 }
             }
             _ => {
+                let mut host_scheme = "http";
                 let client = if let Some(ref certs) = env::var("DOCKER_CERT_PATH").ok() {
                     // fixme: don't unwrap before you know what's in the box
                     // https://github.com/hyperium/hyper/blob/master/src/net.rs#L427-L428
@@ -628,6 +629,7 @@ impl Docker {
                         connector.builder_mut().set_ca_file(&Path::new(ca)).unwrap();
                     }
                     let ssl = OpensslClient::from(connector.build());
+                    host_scheme = "https";
                     Client::with_connector(HttpsConnector::new(ssl))
                 } else {
                     Client::new()
@@ -635,7 +637,7 @@ impl Docker {
                 Docker {
                     transport: Transport::Tcp {
                         client: client,
-                        host: format!("{}://{}:{}", host.scheme(), host.host_str().unwrap().to_owned(), host.port_or_known_default().unwrap()),
+                        host: format!("{}://{}:{}", host_scheme, host.host_str().unwrap().to_owned(), host.port_or_known_default().unwrap()),
                     },
                 }
             }

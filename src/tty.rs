@@ -35,8 +35,6 @@ impl Tty {
                         Err(_) => break,
                     };
                 }
-                Err(_) => break,
-            }
         }
         Tty {
             stdout: String::from_utf8_lossy(&stdout).to_string(),
