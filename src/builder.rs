@@ -921,6 +921,7 @@ impl NetworkCreateOptionsBuilder {
     }
 }
 
+#[allow(non_snake_case)]
 /// Interface for connect container to network
 pub struct ContainerConnectionOptions {
     pub Container: Option<String>,
